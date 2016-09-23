@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="flashCards">
+  <head>
+    <link rel="stylesheet" href="./bootstrap.css">
+    <link rel="stylesheet" href="./cards.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+  </head>
+  <cards>
+  <body>
+    <script>
+      angular
+        .module('flashCards', [])
+        .directive('cards', cards)
+
+      function cards() {
+        function cardsCtrl($scope) {
+          $scope.wins = 0
+          $scope.fails = 0
+          $scope.showback = false
+          $scope.edit = false
+          $scope.cards = []
+          $scope.front = ($scope.cards[0] && $scope.cards[0].front) || undefined
+          $scope.back = ($scope.cards[0] && $scope.cards[0].back) || undefined
+          $scope.editingCard = undefined
+
+          $scope.flip = flip
+          $scope.editDetails = editDetails;
+          $scope.nextCard = nextCard
+          $scope.addCard = addCard
+          $scope.decrement = decrement
+          $scope.increment = increment
+          $scope.createOrEdit = createOrEdit
+
+          function flip() {
+            $scope.showback = !$scope.showback
+          }
+
+          function addCard(front, back) {
+            $scope.cards.push({front, back})
+            if ($scope.cards.length === 1) {
+              $scope.front = $scope.cards[0].front
+              $scope.back = $scope.cards[0].back
+            }
+            $scope.newFront = ''
+            $scope.newBack = ''
+          }
+
+          function createOrEdit(newFront, newBack) {
+           // console.log('create or edit:', $scope.edit)
+            $scope.edit ? editCard(newFront, newBack) : addCard(newFront, newBack)
+            // console.log(newFront, newBack)
+          }
+
+          function editDetails() {
+            $scope.edit = true
+            $scope.newFront = $scope.cards[0].front
+            $scope.newBack = $scope.cards[0].back
+            $scope.editingCard = $scope.cards[0]
+          }
+
+          function editCard(front, back) {
+            $scope.editingCard.front = front
+            $scope.editingCard.back = back
+            $scope.newFront = ''
+            $scope.newBack = ''
+            $scope.edit = false
+            if ($scope.cards[0] === $scope.editingCard) {
+              $scope.front = front
+              $scope.back = back
+            }
+          }
+
+          function decrement() {
+            $scope.fails++
+          }
+
+          function increment() {
+            $scope.wins++
+          }
+
+          function nextCard() {
+            if ($scope.cards[0]) {
+              console.log($scope.cards)
+              $scope.cards = $scope.cards.slice(1).concat($scope.cards[0])
+              $scope.front = $scope.cards[0].front
+              $scope.back = $scope.cards[0].back
+            }
+            flip();
+          }
+
+
+        }
+        cardsCtrl.$inject = ['$scope']
+
+        return {
+          controller: cardsCtrl,
+          templateUrl: 'cards.html'
+        }
+
+      }
+    </script>
+  </body>
+
+
+
+
+
+
+
+</html>

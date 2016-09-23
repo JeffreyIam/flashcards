@@ -1,0 +1,46 @@
+<div class="star"></div>
+<div class="row">
+  <div class="jumbotron col-sm-6 col-sm-offset-3">
+    <div class="text-center">
+      <h4 ng-if="!edit">Add Cards</h4>
+      <h4 ng-if="edit">Edit Cards</h4>
+
+      <form ng-submit="createOrEdit(newFront, newBack)" class="text-center">
+        <input class="form-control" placeholder="Front" ng-model="newFront">
+        <br>
+        <input class="form-control" placeholder="Back" ng-model="newBack">
+        <br>
+        <button ng-if="!edit" class="btn btn-primary">Add Card</button>
+        <button ng-if="edit" class="btn btn-primary">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-sm-2">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Card Stats</div>
+      <div class="panel-body">
+        <div>Success: {{ wins }}</div>
+        <div>Fails: {{ fails }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron col-sm-6 col-sm-offset-3">
+  <div class="text-center">
+    <div>
+      <h4>Flashcards</h4>
+    </div>
+    <div ng-if="!showback">
+      {{ front }}
+    </div>
+    <div ng-if="showback">
+      {{ back }}
+    </div>
+    <button ng-click="flip()" class="btn btn-primary">Flip</button>
+    <button ng-click="editDetails()" class="btn btn-primary">Edit</button>
+    <button ng-if="showback" ng-click="increment(); nextCard()" class="btn btn-info">Win</button>
+    <button ng-if="showback" ng-click="decrement(); nextCard()" class="btn btn-default">Fail</button>
+  </div>
+</div>
